@@ -1,0 +1,43 @@
+---
+title: "Developing Data Products Week 2"
+author: "Jonathan Gregory"
+date: "30 May 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+``` {r, include = FALSE}
+library(ggmap)
+library(leaflet)
+library(rvest)
+```
+
+## Introcuction
+
+- Markers show properties sold in the london borough of Lambeth from January to April 2018
+- Clicking on the markers will reveal the price paid and type of the property
+
+## Lambeth Property Map
+
+```{r ,echo = FALSE}
+
+# load in the price paid data for 2018
+
+Price_dat_4<- readRDS("Price_dat_4.Rds")
+Price_dat_4$lat <- as.numeric(Price_dat_4$lat)
+Price_dat_4$lng <- as.numeric(Price_dat_4$lng)
+
+mymap <- leaflet() %>% addTiles() %>% addMarkers(lng = Price_dat_4$lng, lat = Price_dat_4$lat, popup = paste("£", as.character(Price_dat_4$Price),"\n","Property type:",
+                                                                                                                               Price_dat_4$`Property Type`),
+                                                 clusterOptions = markerClusterOptions())
+mymap 
+
+
+```
+
+Contains HM Land Registry data © Crown copyright and database right 2018. This data is licensed under the Open Government Licence v3.0.
+
+
